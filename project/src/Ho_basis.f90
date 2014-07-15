@@ -2,11 +2,7 @@ MODULE Ho_basis
 
   PRIVATE
 
-  PUBLIC :: RadHO, olrho, ylm, LaguerreL2, plgndr
-
-!   INTERFACE RadHO
-!      MODULE PROCEDURE RadHO
-!   END INTERFACE
+  PUBLIC :: RadHO
 
 CONTAINS
   ! log(Gamma(xx)) From numerical recipies

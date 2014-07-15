@@ -34,3 +34,9 @@ matrix_elements_test.o : matrix_elements_test.f90
 
 symmat_mod.o : symmat_mod.f90
 	$(FC) -c $(OPTS) $<
+
+
+
+clean:
+	rm -f $(OBJECTS)
+	rm -f *.mod
