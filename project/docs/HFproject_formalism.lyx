@@ -1,0 +1,249 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Subsection*
+Hamiltonian
+\end_layout
+
+\begin_layout Standard
+For the project we consider an harmonic oscillator trap with two-body interactio
+n.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+H=\sum_{i=1}^{N}\left(\frac{p_{i}^{2}}{2m}+\frac{m\omega r_{i}^{2}}{2}\right)+\sum_{i<j}V_{ij}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{12}=\left[V_{R}(\vec{r}_{1},\vec{r}_{2})+\frac{1}{2}\left(1+P_{\tau}\right)V_{t}(\vec{r}_{1},\vec{r}_{2})+\frac{1}{2}\left(1-P_{\sigma}\right)V_{s}(\vec{r}_{1},\vec{r}_{2})\right]\frac{1}{2}\left(1+P_{r}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Fourier-transform trick for matrix elements
+\end_layout
+
+\begin_layout Standard
+Matrix elements 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{ij,i'j'}=\int d\vec{r}_{1}d\vec{r_{2}}\psi_{i}^{*}(\vec{r}_{1})\psi_{j}^{*}(\vec{r}_{2})v(\vec{r}_{1},\vec{r}_{2})\psi_{i'}(\vec{r}_{1})\psi_{j'}(\vec{r}_{2})=\int d\vec{r}_{1}d\vec{r_{2}}\psi_{i}^{*}(\vec{r}_{1})\psi_{i'}(\vec{r}_{1})v(\vec{r}_{1},\vec{r}_{2})\psi_{j}^{*}(\vec{r}_{2})\psi_{j'}(\vec{r}_{2})
+\]
+
+\end_inset
+
+Can be expressed
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{ij,i'j'}=\sum_{AB}c_{i'iA}^{*}c_{jj'B}\int\chi_{A}^{*}(\vec{r}_{1})v(\vec{r}_{1},\vec{r}_{2})\chi_{B}(\vec{r}_{2})d\vec{r}_{1}d\vec{r_{2}},
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $c_{ii'A}=\int d\vec{r}_{1}\chi_{A}^{*}(\vec{r}_{1})\psi_{i}^{*}(\vec{r}_{1})\psi_{i'}(\vec{r}_{1})$
+\end_inset
+
+.
+ The matrix element
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+v_{AB}=\int\chi_{A}^{*}(\vec{r}_{1})v(\vec{r}_{1},\vec{r}_{2})\chi_{B}(\vec{r}_{2})
+\]
+
+\end_inset
+
+can be calculated using Fourier transformation trick.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\psi(\vec{q})=\frac{1}{(2\pi)^{3/2}}\int d\vec{r}e^{-i\vec{q}\cdot\vec{r}}\psi(\vec{r})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\psi(\vec{r})=\frac{1}{(2\pi)^{3/2}}\int d\vec{q}e^{i\vec{q}\cdot\vec{r}}\psi(\vec{q})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\int d\vec{r}_{1}d\vec{r_{2}}\psi_{n}(\vec{r}_{1})v(\vec{r}_{1},\vec{r}_{2})\psi_{m}(\vec{r}_{2}) & =\frac{1}{(2\pi)^{3}}\int d\vec{r}_{1}d\vec{r_{2}}d\vec{q}_{1}d\vec{q}_{2}e^{-i\vec{q}_{1}\cdot\vec{r}_{1}}\psi_{n}^{*}(\vec{q}_{1})v(\vec{r}_{1},\vec{r}_{2})e^{i\vec{q}_{2}\cdot\vec{r}_{2}}\psi_{m}(\vec{q}_{2})\\
+ & =\frac{1}{(2\pi)^{3}}\int d\vec{R}d\vec{r}d\vec{q}_{1}d\vec{q}_{2}e^{-i\vec{q}_{1}\cdot\left(\vec{R}+\frac{\vec{r}}{2}\right)}e^{i\vec{q}_{2}\cdot\left(\vec{R}-\frac{\vec{r}}{2}\right)}v(\vec{r}_{1},\vec{r}_{2})\psi_{n}^{*}(\vec{q}_{1})\psi_{m}(\vec{q}_{2})\\
+ & =\frac{1}{(2\pi)^{3}}\int d\vec{R}d\vec{r}d\vec{q}_{1}d\vec{q}_{2}e^{-i\vec{R}\cdot\left(\vec{q}_{1}-\vec{q}_{2}\right)}e^{-i\vec{r}\left(\vec{q}_{1}+\vec{q}_{2}\right)/2}v\left(\vec{r}_{1}(\vec{R},\vec{r}),\vec{r}_{2}(\vec{R},\vec{r})\right)\psi_{n}^{*}(\vec{q}_{1})\psi_{m}(\vec{q}_{2}),
+\end{align*}
+
+\end_inset
+
+where the CM and relative coordinates
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\vec{R}=\frac{\vec{r}_{1}+\vec{r}_{2}}{2},\;\vec{r}=\vec{r}_{1}-\vec{r}_{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\vec{r}_{1}=\vec{R}+\frac{\vec{r}}{2},\;\vec{r}_{2}=\vec{R}-\frac{\vec{r}}{2}
+\]
+
+\end_inset
+
+where used.
+ If the interaction is translational invariant 
+\begin_inset Formula $v(\vec{r}_{1},\vec{r}_{2})=v(\vec{r})$
+\end_inset
+
+ then we can evaluate further
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+ & \frac{1}{(2\pi)^{3}}\int d\vec{R}d\vec{r}d\vec{q}_{1}d\vec{q}_{2}e^{-i\vec{R}\cdot\left(\vec{q}_{1}-\vec{q}_{2}\right)}e^{-i\vec{r}\left(\vec{q}_{1}+\vec{q}_{2}\right)/2}v(\vec{r})\psi_{n}^{*}(\vec{q}_{1})\psi_{m}(\vec{q}_{2})\\
+ & =\int d\vec{r}d\vec{q}_{1}d\vec{q}_{2}\delta(\vec{q}_{1}-\vec{q}_{2})e^{-i\vec{r}\left(\vec{q}_{1}+\vec{q}_{2}\right)/2}v(\vec{r})\psi_{n}^{*}(\vec{q}_{1})\psi_{m}(\vec{q}_{2})\\
+ & =\int d\vec{r}d\vec{q}e^{-i\vec{r}\cdot\vec{q}}v(\vec{r})\psi_{n}^{*}(\vec{q})\psi_{m}(\vec{q})\\
+ & =(2\pi)^{3/2}\int d\vec{q}v(\vec{q})\psi_{n}^{*}(\vec{q})\psi_{m}(\vec{q}),
+\end{align*}
+
+\end_inset
+
+We then need the Fourier transform of the potential 
+\begin_inset Formula $v(\vec{r})$
+\end_inset
+
+,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+v(\vec{q})==\frac{1}{(2\pi)^{3/2}}\int d\vec{r}e^{-i\vec{q}\cdot\vec{r}}v(\vec{r})
+\]
+
+\end_inset
+
+In the case of a central and local Yukawa-type potential 
+\begin_inset Formula $v(r)=\frac{e^{-\kappa r}}{r}$
+\end_inset
+
+ we get
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\int d\vec{r}e^{-i\vec{q}\cdot\vec{r}}\frac{e^{-\kappa r}}{r} & =2\pi\int_{0}^{\infty}r^{2}dr\int_{-1}^{1}d\alpha\frac{e^{-irq\alpha-\kappa r}}{r}\\
+ & =2\pi\int_{0}^{\infty}dr\frac{e^{-irq-\kappa y}-e^{-irq-\kappa y}}{-iq}\\
+ & =4\pi\frac{1}{q^{2}+\kappa^{2}}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
