@@ -82,7 +82,145 @@ H=\sum_{i=1}^{N}\left(\frac{p_{i}^{2}}{2m}+\frac{m\omega r_{i}^{2}}{2}\right)+\s
 \begin_layout Standard
 \begin_inset Formula 
 \[
-V_{12}=\left[V_{R}(\vec{r}_{1},\vec{r}_{2})+\frac{1}{2}\left(1+P_{\tau}\right)V_{t}(\vec{r}_{1},\vec{r}_{2})+\frac{1}{2}\left(1-P_{\sigma}\right)V_{s}(\vec{r}_{1},\vec{r}_{2})\right]\frac{1}{2}\left(1+P_{r}\right)
+V_{12}=\left[V_{R}(\vec{r})+\frac{1}{2}\left(1+P_{\sigma}\right)V_{t}(\vec{r})+\frac{1}{2}\left(1-P_{\sigma}\right)V_{s}(\vec{r})\right]\frac{1}{2}\left(1+P_{r}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $\vec{r}=\vec{r}_{1}-\vec{r}_{2}$
+\end_inset
+
+ is the relative coordinate, 
+\begin_inset Formula $P_{\sigma}=\frac{1+\vec{\sigma}_{1}\cdot\vec{\sigma}_{2}}{2}$
+\end_inset
+
+ interchanges the spins of to particles, and 
+\begin_inset Formula $P_{r}|\vec{r}_{rel},\vec{R}_{CM}\rangle=|-\vec{r}_{rel},\vec{R}_{CM}\rangle$
+\end_inset
+
+ interchanges the coordinates of two particles.
+ 
+\end_layout
+
+\begin_layout Standard
+The projectors defined by
+\begin_inset Formula $\Pi_{s}^{\sigma}=\frac{1}{2}\left(1-P_{\sigma}\right)$
+\end_inset
+
+projects onto spin-singlet states, 
+\begin_inset Formula $\Pi_{t}^{\sigma}=\frac{1}{2}\left(1+P_{\sigma}\right)$
+\end_inset
+
+ projects onto spin-triplet states, and 
+\begin_inset Formula $\Pi_{e}^{r}=\frac{1}{2}\left(1+P_{r}\right)$
+\end_inset
+
+ projects onto even parity relative wave functions.
+ One can re write the interaction
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{12}=V_{es}(\vec{r})\Pi_{s}^{\sigma}\Pi_{e}^{r}+V_{et}(\vec{r})\Pi_{t}^{\sigma}\Pi_{e}^{r},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{es}(\vec{r})=V_{R}(\vec{r})+V_{s}(\vec{r}),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+V_{et}(\vec{r})=V_{R}(\vec{r})+V_{t}(\vec{r}).
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+H=\sum_{i}\hbar\omega a_{i}^{\dagger}a_{i}+\frac{1}{4}\sum_{ijkl}\bar{v}_{ijkl}a_{i}^{\dagger}a_{j}^{\dagger}a_{l}a_{k}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We need the matrix elements
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\bar{v}_{ijkl}=v_{ijkl}-v_{ijlk},
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+in Ring & Schucks convention
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+v_{ijkl}=\int d1d2d3d4\phi_{i}^{*}(1)\phi_{j}^{*}(2)\langle1|_{1}\langle2|_{2}V_{12}|3\rangle_{1}|4\rangle_{2}\phi_{k}(3)\phi_{l}(4)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For a local interaction 
+\begin_inset Formula $\langle1|_{1}\langle2|_{2}V_{12}|3\rangle_{1}|4\rangle_{2}=\delta(1-3)\delta(2-4)V(1,2)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+v_{ijkl}=\int d1d2\phi_{i}^{*}(1)\phi_{j}^{*}(2)V(1,2)\phi_{k}(1)\phi_{l}(2)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+v_{ijkl}=\int d\vec{r}_{1}
 \]
 
 \end_inset
