@@ -229,6 +229,119 @@ v_{ijkl}=\int d\vec{r}_{1}
 \end_layout
 
 \begin_layout Subsubsection*
+Ho wave functions
+\end_layout
+
+\begin_layout Standard
+I use the phase convention in Suhonen, form nucleons to nuclei p.
+ 49
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+R_{nl}(r)=A_{nl}\left(\frac{r}{b}\right)^{l}e^{-r^{2}/2b^{2}}L_{n}^{(l+1/2)}(r^{2}/b^{2}),
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+A_{nl}=\sqrt{\frac{2n!}{b^{3}\Gamma(n+l+\frac{3}{2})}},\: b=\sqrt{\frac{\hbar}{m\omega}}=\frac{\hbar c}{\sqrt{mc{}^{2}\hbar\omega}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+Gauss-Hermite quadrature
+\end_layout
+
+\begin_layout Standard
+Fist consider overlaps of radial HO-wfs
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\int drr^{2}R_{nl}(r)R_{n'l}(r) & =A_{nl}A_{n'l}\int_{0}^{\infty}drr^{2}e^{-r^{2}/b^{2}}\left(\frac{r}{b}\right)^{2l}L_{n}^{(l+\frac{1}{2})}(r^{2}/b^{2})L_{n'}^{(l+\frac{1}{2})}(r^{2}/b^{2})\\
+\left[br'=r\right] & =A_{nl}A_{n'l}b^{3}\int_{0}^{\infty}dr'e^{-r'^{2}}r'^{2+2l}L_{n}^{(l+\frac{1}{2})}(r'^{2})L_{n'}^{(l+\frac{1}{2})}(r'^{2})\\
+ & =\frac{1}{2}A_{nl}A_{n'l}b^{3}\int_{-\infty}^{\infty}dr'e^{-r'^{2}}r'^{2(l+1)}L_{n}^{(l+\frac{1}{2})}(r'^{2})L_{n'}^{(l+\frac{1}{2})}(r'^{2})\\
+ & =\frac{1}{2}A_{nl}A_{n'l}b^{3}\sum_{i=1}^{m}w_{i}f(r_{i})\\
+ & =A_{nl}A_{n'l}b^{3}\sum_{i=1}^{m/2}w_{i}f(r_{i}),
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+where 
+\begin_inset Formula $r_{i}$
+\end_inset
+
+ is the node of the Hermite polynomial of order 
+\begin_inset Formula $m$
+\end_inset
+
+, and 
+\begin_inset Formula $w_{i}$
+\end_inset
+
+ the corresponding weight.
+ 
+\begin_inset Formula $f(r')=r'^{2(l+1)}L_{n}^{(l+\frac{1}{2})}(r'^{2})L_{n'}^{(l+\frac{1}{2})}(r'^{2})$
+\end_inset
+
+.
+ The last line holds if 
+\begin_inset Formula $m=2n$
+\end_inset
+
+, the fact that the nodes of the Hermite polynomials come in pairs 
+\begin_inset Formula $H_{m}(r_{i})=H_{m}(-r_{i})$
+\end_inset
+
+, and that the function 
+\begin_inset Formula $f$
+\end_inset
+
+ is even.
+ As 
+\begin_inset Formula $f$
+\end_inset
+
+ is a polynomial with derivative 0 at 
+\begin_inset Formula $r=0$
+\end_inset
+
+ the, 
+\begin_inset Formula $f(r)$
+\end_inset
+
+ is a polynomial over 
+\begin_inset Formula $(-\infty,\infty)$
+\end_inset
+
+ and the formula is exact for large enough 
+\begin_inset Formula $n$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Subsubsection*
 Fourier-transform trick for matrix elements
 \end_layout
 

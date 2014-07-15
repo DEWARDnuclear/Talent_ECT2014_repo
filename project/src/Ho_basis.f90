@@ -1,12 +1,63 @@
 MODULE Ho_basis
+  USE types
 
   PRIVATE
 
-  PUBLIC :: RadHO
+  PUBLIC :: RadHO, overlap_ho
 
 CONTAINS
+  
+  REAL(kind=r_kind) FUNCTION overlap_ho(n1,l1,n2,l2)
+    USE numerical_integration
+
+    IMPLICIT NONE
+    INTEGER, intent(in) :: n1,l1,n2,l2
+    INTEGER :: II
+
+    REAL(kind=r_kind), ALLOCATABLE :: f1(:),f2(:),fw(:)
+    REAL(kind=r_kind) :: lnfac1, lnfac2
+
+
+    overlap_ho = 0.0
+
+    IF(.not. is_init_grid_GH) THEN
+       WRITE(*,*) 'GH grid is not initialized'
+       STOP
+    END IF
+
+    ALLOCATE(f1(grid_size_GH),f2(grid_size_GH),fw(grid_size_GH))
+    
+    CALL LaguerreL2(n1, l1, grid_points_GH**2, f1, fw, grid_size_GH)
+    CALL LaguerreL2(n2, l2, grid_points_GH**2, f2, fw, grid_size_GH)
+
+    DO II = 1,grid_size_GH
+       overlap_ho = overlap_ho + grid_weights_GH(II)*grid_points_GH(II)**(l1+l2+2)*f1(II)*f2(II)  
+    END DO
+
+    IF (n1 == 0) THEN
+      lnfac1 = 0.0_r_kind
+    ELSE
+      lnfac1 = gammln(DBLE(n1)+1.0_r_kind)
+    END IF
+    IF (n2 == 0) THEN
+      lnfac2 = 0.0_r_kind
+    ELSE
+      lnfac2 = gammln(DBLE(n2)+1.0_r_kind)
+    END IF
+
+    
+    overlap_ho = 2.0_r_kind * EXP( lnfac1 + lnfac2 - gammln(DBLE(n1)+DBLE(l1)+ 1.5_r_kind) - gammln(DBLE(n2)+DBLE(l2)+ 1.5_r_kind) ) * overlap_ho
+    
+    DEALLOCATE(f1,f2,fw)
+
+    RETURN 
+
+  END FUNCTION overlap_ho
+
+
   ! log(Gamma(xx)) From numerical recipies
   FUNCTION gammln(xx)
+    IMPLICIT NONE
     DOUBLE PRECISION gammln,xx
     ! Returns the value ln[GAM(xx)] for xx > 0.
     INTEGER j
@@ -107,7 +158,7 @@ CONTAINS
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   FUNCTION ylm(l,m,theta, phi )
-
+    IMPLICIT NONE
   INTEGER :: l, m
   DOUBLE PRECISION :: theta, phi, lD, mD 
   COMPLEX :: ylm
@@ -138,6 +189,7 @@ CONTAINS
 ! CHANGED REAL TO DOUBLE PRECISION and removed do labels
 
   FUNCTION plgndr(l,m,x)
+    IMPLICIT NONE
   INTEGER l,m
   DOUBLE PRECISION :: plgndr,x
   !Computes the associated Legendre polynomial Plm (x). Here m and l are integers satisfying
