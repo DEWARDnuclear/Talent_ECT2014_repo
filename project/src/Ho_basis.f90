@@ -1,14 +1,120 @@
 MODULE Ho_basis
   USE types
+  USE numerical_integration
 
   PRIVATE
 
-  PUBLIC :: RadHO, overlap_ho
+  PUBLIC :: RadHO, overlap_ho, Ho_b, init_ho_basis, h_sp
+
+  REAL(kind=r_kind), protected :: Ho_b, Ho_hbaromega
+  INTEGER, protected :: Ho_nmax, Ho_lmax
+
+  REAL(kind=r_kind), allocatable, protected:: h_sp(:,:)
 
 CONTAINS
+
+  SUBROUTINE init_ho_basis(b,nmax,lmax)
+    IMPLICIT NONE
+    
+    REAL(kind=r_kind), intent(in) :: b
+    INTEGER, intent(in) :: nmax, lmax
+
+    INTEGER :: n1,n2,l1,l2
+
+    WRITE(*,*) 'Initializing ho basis'
+
+    !currently only allowing for lmax = 0, need to consider better structure for block diagonality for lmax>0
+    IF(lmax > 0) THEN
+       WRITE(*,*) 'Only lmax = 0 supportet ATM, quitting'
+       STOP
+    END IF
+
+    CALL set_Ho_b(b)
+    
+    !TODO fix this
+    Ho_hbaromega = 1.0_r_kind
+    !
+
+
+    Ho_nmax = nmax
+    Ho_lmax = lmax
+
+    IF(ALLOCATED(h_sp)) DEALLOCATE(h_sp)
+
+    ALLOCATE(h_sp(0:nmax,0:nmax))    
+
+    !
+    l1 = 0
+    l2 = 0
+    !
+
+   
+    WRITE(*,*) 'Calculating matrix elements'
+    WRITE(*,*) 'Ho_nmax =', Ho_nmax
+    
+    DO n1=0,Ho_nmax
+       DO n2=n1,Ho_nmax
+
+          h_sp(n1,n2) = one_body_radial_matel_GH(n1,l1,n2,l2,coulomb_pot)+kinetic_matel_analytic(n1,l1,n2,l2)
+          h_sp(n2,n1) = h_sp(n1,n2)
+          !WRITE(*,*) 'n1,n2 = ',n1,n2
+       END DO
+    END DO
+
+
+
+  END SUBROUTINE init_ho_basis
+
+
+  REAL(kind=r_kind) FUNCTION coulomb_pot(r)
+    IMPLICIT NONE
+    REAL(kind=r_kind), intent(in) :: r
+    !fix units    
+    coulomb_pot = -1/ABS(r)
+  END FUNCTION coulomb_pot
+
+
+
+  SUBROUTINE set_Ho_b(b)
+    IMPLICIT NONE
+    REAL(kind=r_kind) :: b
+
+    IF(b<=0) THEN
+       WRITE(*,*) 'b<=0 not allowed'
+       STOP
+    END IF
+    Ho_b = b
+
+  END SUBROUTINE set_Ho_b
+
+  !The prefactor for radial ho wave funciton with osc. lenght b = 1
+  REAL(kind=r_kind) FUNCTION radial_wf_prefactor(n,l)
+
+    IMPLICIT NONE
+
+    INTEGER, intent(in) :: n,l
+    REAL(kind=r_kind) :: lnfac
+
+    IF (n == 0) THEN
+      lnfac = 0.0_r_kind
+    ELSE
+      lnfac = gammln(DBLE(n)+1.0_r_kind)
+    END IF
+
+    !WRITE(*,*) 'lfac in function = ' , lnfac
+    
+    radial_wf_prefactor = sqrt(2.0_r_kind)&
+         * EXP( 0.5_r_kind*(lnfac - gammln(DBLE(n)+DBLE(l)+ 1.5_r_kind)))
+    
+     !radial_wf_prefactor = 2.0_r_kind * EXP( 0.5_r_kind*(lnfac + lnfac - gammln(DBLE(n)+DBLE(l)+ 1.5_r_kind) - gammln(DBLE(n)+DBLE(l)+ 1.5_r_kind)) )
+     !radial_wf_prefactor = sqrt(radial_wf_prefactor)
+
+    
+
+  END FUNCTION radial_wf_prefactor
   
   REAL(kind=r_kind) FUNCTION overlap_ho(n1,l1,n2,l2)
-    USE numerical_integration
+    
 
     IMPLICIT NONE
     INTEGER, intent(in) :: n1,l1,n2,l2
@@ -35,27 +141,124 @@ CONTAINS
        !overlap_ho = overlap_ho + grid_points_GH(II)**2*grid_weights_GH(II)
     END DO
 
-    IF (n1 == 0) THEN
-      lnfac1 = 0.0_r_kind
-    ELSE
-      lnfac1 = gammln(DBLE(n1)+1.0_r_kind)
-    END IF
-    IF (n2 == 0) THEN
-      lnfac2 = 0.0_r_kind
-    ELSE
-      lnfac2 = gammln(DBLE(n2)+1.0_r_kind)
-    END IF
+!!$    IF (n1 == 0) THEN
+!!$      lnfac1 = 0.0_r_kind
+!!$    ELSE
+!!$      lnfac1 = gammln(DBLE(n1)+1.0_r_kind)
+!!$    END IF
+!!$    IF (n2 == 0) THEN
+!!$      lnfac2 = 0.0_r_kind
+!!$    ELSE
+!!$      lnfac2 = gammln(DBLE(n2)+1.0_r_kind)
+!!$    END IF
 
     
-    overlap_ho = 2.0_r_kind * EXP( 0.5_r_kind*(lnfac1 + lnfac2 - gammln(DBLE(n1)+DBLE(l1)+ 1.5_r_kind) - gammln(DBLE(n2)+DBLE(l2)+ 1.5_r_kind)) ) * overlap_ho
+    !overlap_ho = 2.0_r_kind * EXP( 0.5_r_kind*(lnfac1 + lnfac2 - gammln(DBLE(n1)+DBLE(l1)+ 1.5_r_kind) - gammln(DBLE(n2)+DBLE(l2)+ 1.5_r_kind)) ) * overlap_ho
 
+    overlap_ho = radial_wf_prefactor(n1,l1)*radial_wf_prefactor(n2,l2)* overlap_ho
     
-    
+    !WRITE(*,*) 'lnfac1 = ', lnfac1, 'lnfac2= ',lnfac2
+
+    !WRITE(*,*) 2.0_r_kind * EXP( 0.5_r_kind*(lnfac1 + lnfac2 - gammln(DBLE(n1)+DBLE(l1)+ 1.5_r_kind) - gammln(DBLE(n2)+DBLE(l2)+ 1.5_r_kind)) )
+    !WRITE(*,*) radial_wf_prefactor(n1,l1)*radial_wf_prefactor(n2,l2)
+
+
     DEALLOCATE(f1,f2,fw)
 
     RETURN 
 
   END FUNCTION overlap_ho
+
+
+  REAL(kind=r_kind) FUNCTION one_body_radial_matel_GH(n1,l1,n2,l2,potential_function)
+    
+    IMPLICIT NONE
+    
+    INTERFACE       
+       !REAL(kind=r_kind) FUNCTION potential_function(r) !cannot acces r_kind in this scope
+       REAL(8) FUNCTION potential_function(r)
+         !REAL(kind=r_kind), intent(in) :: r
+         REAL(8), intent(in) :: r
+       END FUNCTION potential_function
+    END INTERFACE
+
+    INTEGER, intent(in) :: n1, l1, n2, l2  
+    INTEGER :: II
+    REAL(kind=r_kind) :: matel
+
+    REAL(kind=r_kind), ALLOCATABLE :: f1(:),f2(:),fw(:)
+    REAL(kind=r_kind) :: lnfac1, lnfac2
+
+    IF(.not. is_init_grid_GH) THEN
+       WRITE(*,*) 'GH grid is not initialized'
+       STOP
+    END IF
+
+    ALLOCATE(f1(grid_size_GH),f2(grid_size_GH),fw(grid_size_GH))
+
+    CALL LaguerreL2(n1, l1, grid_points_GH**2, f1, fw, grid_size_GH)
+    CALL LaguerreL2(n2, l2, grid_points_GH**2, f2, fw, grid_size_GH)
+
+   
+    matel = 0.0_r_kind
+
+    DO II = 1,grid_size_GH
+       matel = matel + grid_weights_GH(II)*potential_function(Ho_b*ABS(grid_points_GH(II)))*ABS(grid_points_GH(II))**(2+l1+l2)*f1(II)*f2(II)
+       
+       !matel = matel + ABS(grid_points_GH(II))**(2+l1+l2)*f1(II)*f2(II)
+       !for debug
+       !WRITE(*,*) matel
+       !end for debug
+
+    END DO
+
+    matel = radial_wf_prefactor(n1,l1)*radial_wf_prefactor(n2,l2)*matel 
+
+    DEALLOCATE(f1,f2,fw)
+
+    one_body_radial_matel_GH = matel
+
+    RETURN 
+
+    
+  END FUNCTION one_body_radial_matel_GH
+
+!!$  SUBROUTINE test
+!!$
+!!$    IMPLICIT NONE
+!!$    REAL(kind=r_kind) :: x
+!!$
+!!$    WRITE(*,*) is_init_grid_GH
+!!$
+!!$  END SUBROUTINE test
+
+
+  REAL(kind=r_kind) FUNCTION kinetic_matel_analytic(n1,l1,n2,l2)
+    IMPLICIT NONE
+    INTEGER, intent(in) :: n1,l1,n2,l2
+    REAL(kind=r_kind) :: matel
+
+    IF(l1 /= l2) THEN
+      kinetic_matel_analytic = 0.0_r_kind
+       RETURN
+    END IF
+    
+    SELECT CASE(n1-n2)
+    CASE(0)
+       matel = 2*n1 + l1 + 1.5_r_kind
+    CASE(-1)
+       matel = sqrt(n2*(n2+l1+0.5_r_kind))
+    CASE(1)
+       matel = sqrt(n1*(n1+l1+0.5_r_kind))
+    CASE DEFAULT
+       matel = 0.0_r_kind
+    END SELECT
+
+   kinetic_matel_analytic = 0.5_r_kind * Ho_hbaromega * matel 
+
+
+  END FUNCTION kinetic_matel_analytic
+
 
 
   ! log(Gamma(xx)) From numerical recipies

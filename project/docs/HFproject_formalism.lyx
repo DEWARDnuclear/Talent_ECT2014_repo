@@ -338,6 +338,26 @@ where
 \end_layout
 
 \begin_layout Standard
+Matrix elements radial one-body potential
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\langle nl|v(r)|n'l'\rangle & =\int drr^{2}R_{nl}(r)v(r)R_{n'l'}(r)\\
+ & =A_{nl}A_{n'l}b^{3}\int_{0}^{\infty}dr'e^{-r'^{2}}v(br')r'^{2+l+l'}L_{n}^{(l+\frac{1}{2})}(r'^{2})L_{n'}^{(l+\frac{1}{2})}(r'^{2})\\
+ & =2\sqrt{\frac{n!n'!}{\Gamma(n+l+\frac{3}{2})\Gamma(n'+l'+\frac{3}{2})}}\sum_{i=1}^{m/2}w_{i}f(r_{i}),
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $f(r')=v(b|r'|)|r'|^{2+l+l'}L_{n}^{(l+\frac{1}{2})}(r'^{2})L_{n'}^{(l+\frac{1}{2})}(r'^{2})$
+\end_inset
+
 
 \end_layout
 
