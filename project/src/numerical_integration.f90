@@ -25,6 +25,8 @@ SUBROUTINE init_grid_GH(n)
   REAL(kind=r_kind) :: eps
   REAL(kind=r_kind), allocatable :: gpwrk(:),gwwrk(:)
 
+  INTEGER :: II
+
   grid_size_GH = n
 
   IF(allocated(grid_points_GH)) DEALLOCATE(grid_points_GH)
@@ -55,10 +57,17 @@ SUBROUTINE init_grid_GH(n)
   CALL HERMIT(2*grid_size_GH, gpwrk, gwwrk, eps, factorial_table, ndherm, ndfact)
   
   grid_points_GH = gpwrk(1:grid_size_GH)
-  grid_weights_GH = gwwrk(1:grid_size_GH)
-  
+  grid_weights_GH = gwwrk(1:grid_size_GH)  
 
   DEALLOCATE(gpwrk,gwwrk)
+
+!!$  !for test, order 2,4 OK
+!!$  WRITE(*,*) 'order GH = ', 2*grid_size_GH
+!!$  WRITE(*,*) 'grid pts    grid weights'
+!!$  DO II=1,grid_size_GH
+!!$     WRITE(*,'(2f16.10)') grid_points_GH(II), grid_weights_GH(II)
+!!$  END DO
+!!$  !end for test
 
   is_init_grid_GH = .true.
 

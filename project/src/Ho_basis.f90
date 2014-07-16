@@ -32,6 +32,7 @@ CONTAINS
 
     DO II = 1,grid_size_GH
        overlap_ho = overlap_ho + grid_weights_GH(II)*grid_points_GH(II)**(l1+l2+2)*f1(II)*f2(II)  
+       !overlap_ho = overlap_ho + grid_points_GH(II)**2*grid_weights_GH(II)
     END DO
 
     IF (n1 == 0) THEN
@@ -46,7 +47,9 @@ CONTAINS
     END IF
 
     
-    overlap_ho = 2.0_r_kind * EXP( lnfac1 + lnfac2 - gammln(DBLE(n1)+DBLE(l1)+ 1.5_r_kind) - gammln(DBLE(n2)+DBLE(l2)+ 1.5_r_kind) ) * overlap_ho
+    overlap_ho = 2.0_r_kind * EXP( 0.5_r_kind*(lnfac1 + lnfac2 - gammln(DBLE(n1)+DBLE(l1)+ 1.5_r_kind) - gammln(DBLE(n2)+DBLE(l2)+ 1.5_r_kind)) ) * overlap_ho
+
+    
     
     DEALLOCATE(f1,f2,fw)
 
